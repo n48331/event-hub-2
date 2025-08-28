@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  uuid        String   @unique @default(uuid())
+  name        String
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  slots       Slot[]
+}
+
+model Slot {
+  id          String   @id @default(cuid())
+  name        String   // e.g., "Morning Session", "Afternoon Workshop"
+  date        String   // e.g., "2024-01-15"
+  time        String   // e.g., "09:00 - 10:20"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  eventId     String
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  
+  topics      Topic[]
+  registrations Registration[]
+}
+
+model Topic {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  instructor  String   // e.g., "Wojciech Kosmala"
+  maxParticipants Int   @default(15)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  slotId      String
+  slot        Slot     @relation(fields: [slotId], references: [id], onDelete: Cascade)
+  registrations Registration[]
+}
+
+model Registration {
+  id          String   @id @default(cuid())
+  email       String
+  name        String?
+  organization String?
+  createdAt   DateTime @default(now())
+  
+  slotId      String
+  slot        Slot     @relation(fields: [slotId], references: [id], onDelete: Cascade)
+  
+  topicId     String
+  topic       Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  
+  @@unique([email, slotId, topicId])
+} 
