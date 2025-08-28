@@ -32,7 +32,7 @@ export async function sendSummaryMail({ to, name, registrations, bannerUrl, subj
 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 10px; overflow: hidden; background: #f4f6fb;">
   <!-- Banner Image as Header -->
   <div style="width: 100%; ">
-    <img src="${bannerUrl}" alt="Event Banner" style="width: 100%; display: block; object-fit: cover;"/>
+    <img src="https://raw.githubusercontent.com/n48331/event-hub-2/refs/heads/main/public/banner.png" alt="Event Banner" style="width: 100%; display: block; object-fit: cover;"/>
   </div>
   <!-- Main Content -->
   <div style="padding: 32px 24px 24px 24px; background: #fff;">
